@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Students AI Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg-gradient-start: #e0f7fa;
+      --bg-gradient-end: #c5f0f7;
+      --text-primary: #004d40;
+      --bg-white: white;
+      --shadow-color: rgba(0, 0, 0, 0.15);
+      --border-color: #0891b2;
+    }
+
+    [data-theme="dark"] {
+      --bg-gradient-start: #0f172a;
+      --bg-gradient-end: #1e293b;
+      --text-primary: #e2e8f0;
+      --bg-white: #1e293b;
+      --shadow-color: rgba(0, 0, 0, 0.3);
+      --border-color: #38bdf8;
+    }
+
+    * {
+      transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                  background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 1rem;
+      box-sizing: border-box;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #box {
+      background-color: var(--bg-white);
+      border-radius: 2rem;
+      box-shadow: 0 20px 40px var(--shadow-color);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      backdrop-filter: blur(10px);
+    }
+
+    #box:hover {
+      transform: scale(1.005) translateY(-2px);
+      box-shadow: 0 25px 50px var(--shadow-color);
+    }
+
+    a {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    a:hover {
+      text-decoration: underline;
+      transform: translateY(-1px);
+    }
+
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 0.75rem;
+      right: 1rem;
+      background: var(--bg-gradient-start);
+      border: 2px solid var(--border-color);
+      border-radius: 50%;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 8px var(--shadow-color);
+      z-index: 50;
+      backdrop-filter: blur(10px);
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.15) rotate(10deg);
+      box-shadow: 0 8px 20px var(--shadow-color);
+    }
+
+    .theme-toggle svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .theme-toggle:active {
+      transform: scale(0.95);
+    }
+
+    /* List item animations */
+    li {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    li:hover {
+      transform: translateX(8px);
+      background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.05), transparent);
+      border-radius: 0.5rem;
+      padding: 0.25rem;
+      margin: -0.25rem;
+    }
+
+    /* Section animations */
+    .mb-10 {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .mb-10:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Dark mode specific styles */
+    [data-theme="dark"] .text-sky-600 {
+      color: #38bdf8 !important;
+    }
+
+    [data-theme="dark"] .text-teal-700 {
+      color: #5eead4 !important;
+    }
+
+    [data-theme="dark"] .text-sky-700 {
+      color: #7dd3fc !important;
+    }
+
+    [data-theme="dark"] .text-cyan-800 {
+      color: #67e8f9 !important;
+    }
+
+    [data-theme="dark"] .text-cyan-700 {
+      color: #67e8f9 !important;
+    }
+
+    [data-theme="dark"] .border-cyan-300 {
+      border-color: #0891b2 !important;
+    }
+
+    [data-theme="dark"] .drop-shadow-md {
+      filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.4));
+      transition: filter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Hover states for dark mode */
+    [data-theme="dark"] .hover\:text-sky-900:hover {
+      color: #0284c7 !important;
+    }
+
+    /* Smooth theme transition overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at center, rgba(0,0,0,0.1), transparent);
+      transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <div id="box" class="w-full max-w-2xl p-4 sm:p-6 md:p-8 mt-4">
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+      <!-- Sun Icon (Light Mode) -->
+      <svg class="sun-icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+      </svg>
+      <!-- Moon Icon (Dark Mode) -->
+      <svg class="moon-icon" style="display: none;" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+      </svg>
+    </button>
+
+    <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center text-sky-600 mb-6 drop-shadow-md leading-tight pt-8">
+      🚀 INTERACTIVE AI WORKSHOP FOR STUDENTS
+    </h1>
+    <p class="text-base sm:text-lg text-center text-teal-700 mb-6 px-2">
+         🤖AI <span class="text-black font-bold">X</span> Ahilyadevi Holkar English Medium School🏫
+    </p>
+
+    <div class="text-center mb-10">
+      <a href="about-us.html" class="bg-gradient-to-r from-sky-100 to-cyan-100 hover:from-sky-200 hover:to-cyan-200 text-sky-700 px-6 py-3 rounded-xl font-semibold transition-all inline-flex items-center gap-2 shadow-md hover:shadow-lg">
+        👥 Meet Our Team
+      </a>
+    </div>
+     <!-- DAY 1 -->
+<div class="mb-10">
+  <h2 class="text-2xl sm:text-3xl font-bold text-sky-600 mb-4 border-b-4 border-cyan-300 pb-2">🌅 DAY 1</h2>
+  <ul class="space-y-4 pl-2">
+    <li>
+      <a href="https://gemini.google.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🌟 Gemini (Google AI)
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Get cool help from Google AI.</span>
+    </li>
+    <li>
+      <a href="https://bard.google.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🧠 Bard
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Another smart AI from Google.</span>
+    </li>
+  </ul>
+</div>
+<!-- DAY 2 -->
+<div class="mb-10">
+  <h2 class="text-2xl sm:text-3xl font-bold text-sky-600 mb-4 border-b-4 border-cyan-300 pb-2">🌅 DAY 2</h2>
+  <ul class="space-y-4 pl-2">
+    <li>
+      <a href="https://www.duolingo.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🦉 Duolingo
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Learn languages with fun, bite-sized lessons!</span>
+    </li>
+    <li>
+      <a href="https://www.khanacademy.org/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🎓 Khan Academy
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Free learning for every student!</span>
+    </li>
+     <li>
+      <a href="https://www.khanacademy.org/khan-labs" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🎓 Khanmigo
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Khan Academy's AI-powered learning buddy.</span>
+    </li>
+  </ul>
+</div>
+<!-- DAY 3 -->
+<div class="mb-10">
+  <h2 class="text-2xl sm:text-3xl font-bold text-sky-600 mb-4 border-b-4 border-cyan-300 pb-2">🌅 DAY 3</h2>
+  <ul class="space-y-4 pl-2">
+    <li>
+      <a href="https://quickdraw.withgoogle.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🎨 QuickDraw
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Learn languages with fun, bite-sized lessons!</span>
+    </li>
+    <li>
+      <a href="https://suno.com/home" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🎵 Suno AI
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Free learning for every student!</span>
+    </li>
+     <li>
+  <a href="#" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition animate-pulse">
+    Coming Soon...
+  </a>
+  <span class="ml-2 text-cyan-800 text-sm sm:text-base">– maths and more study techniques will be available soon!</span>
+</li>
+
+  </ul>
+</div>
+    <!-- AI Tools -->
+<div class="mb-10">
+  <h2 class="text-2xl sm:text-3xl font-bold text-sky-600 mb-4 border-b-4 border-cyan-300 pb-2">🧠 AI Tools & Resources</h2>
+  <ul class="space-y-4 pl-2">
+    <li>
+      <a href="https://chat.openai.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        💬 ChatGPT
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Talk with a super smart AI!</span>
+    </li>
+    <li>
+      <a href="https://gemini.google.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🌟 Gemini (Google AI)
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Get cool help from Google AI.</span>
+    </li>
+    <li>
+      <a href="https://www.jungle.ai/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🌳 Jungle AI
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Explore predictive AI technologies!</span>
+    </li>
+    <li>
+      <a href="https://www.khanacademy.org/khan-labs" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🎓 Khanmigo
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Khan Academy's AI-powered learning buddy.</span>
+    </li>
+    <li>
+      <a href="https://bard.google.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🧠 Bard
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Another smart AI from Google.</span>
+    </li>
+    <li>
+      <a href="https://openai.com/dall-e" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🎨 DALL·E
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Create images from words!</span>
+    </li>
+    <li>
+      <a href="https://midjourney.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🎨 Midjourney
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Create art from your imagination!</span>
+    </li>
+    <li>
+      <a href="https://runwayml.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🎥 RunwayML
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Make videos with AI magic.</span>
+    </li>
+  </ul>
+</div>
+
+<!-- Study Tools -->
+<div class="mb-10">
+  <h2 class="text-2xl sm:text-3xl font-bold text-sky-600 mb-4 border-b-4 border-cyan-300 pb-2">📚 Study Tools</h2>
+  <ul class="space-y-4 pl-2">
+    <li>
+      <a href="https://quizlet.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🧠 Quizlet
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Create flashcards and study sets!</span>
+    </li>
+    <li>
+      <a href="https://apps.ankiweb.net/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🔄 Anki
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Smart spaced repetition flashcards.</span>
+    </li>
+    <li>
+      <a href="https://www.khanacademy.org/practice" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🎯 Khan Academy Practice
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Practice exercises for every subject!</span>
+    </li>
+    <li>
+      <a href="https://pomofocus.io/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        ⏰ Pomodoro Timer
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Stay focused with timed study sessions.</span>
+    </li>
+    <li>
+      <a href="https://www.notion.so/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        📝 Notion
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– All-in-one workspace for notes and planning.</span>
+    </li>
+  </ul>
+</div>
+
+<!-- Research Resources -->
+<div class="mb-10">
+  <h2 class="text-2xl sm:text-3xl font-bold text-sky-600 mb-4 border-b-4 border-cyan-300 pb-2">🔬 Research Resources</h2>
+  <ul class="space-y-4 pl-2">
+    <li>
+      <a href="https://scholar.google.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🎓 Google Scholar
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Find academic papers and research!</span>
+    </li>
+    <li>
+      <a href="https://www.jstor.org/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        📖 JSTOR
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Academic journals and books database.</span>
+    </li>
+    <li>
+      <a href="https://www.zotero.org/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        📎 Zotero
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Organize and cite your research sources.</span>
+    </li>
+    <li>
+      <a href="https://www.easybib.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        📋 EasyBib
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Generate citations and bibliographies.</span>
+    </li>
+    <li>
+      <a href="https://www.wikipedia.org" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        📚 Wikipedia
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Learn from the world's knowledge hub!</span>
+    </li>
+  </ul>
+</div>
+
+<!-- Language Learning -->
+<div class="mb-10">
+  <h2 class="text-2xl sm:text-3xl font-bold text-sky-600 mb-4 border-b-4 border-cyan-300 pb-2">🌍 Language Learning</h2>
+  <ul class="space-y-4 pl-2">
+    <li>
+      <a href="https://www.duolingo.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🦉 Duolingo
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Learn languages with fun, bite-sized lessons!</span>
+    </li>
+    <li>
+      <a href="https://www.babbel.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        💬 Babbel
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Practical conversations in new languages.</span>
+    </li>
+    <li>
+      <a href="https://www.tandem.net/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🤝 Tandem
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Practice with native speakers worldwide!</span>
+    </li>
+    <li>
+      <a href="https://conjuguemos.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🔄 Conjuguemos
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Master verb conjugations and vocabulary.</span>
+    </li>
+  </ul>
+</div>
+
+<!-- STEM Resources -->
+<div class="mb-10">
+  <h2 class="text-2xl sm:text-3xl font-bold text-sky-600 mb-4 border-b-4 border-cyan-300 pb-2">🔬 STEM Resources</h2>
+  <ul class="space-y-4 pl-2">
+    <li>
+      <a href="https://www.wolframalpha.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🧮 Wolfram Alpha
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Computational knowledge engine for math & science!</span>
+    </li>
+    <li>
+      <a href="https://www.desmos.com/calculator" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        📊 Desmos Graphing Calculator
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Graph functions and explore mathematics.</span>
+    </li>
+    <li>
+      <a href="https://scratch.mit.edu/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🐱 Scratch
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Learn coding with visual programming blocks!</span>
+    </li>
+    <li>
+      <a href="https://phet.colorado.edu/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🔬 PhET Simulations
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Play with interactive science & math sims!</span>
+    </li>
+    <li>
+      <a href="https://www.codecademy.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        💻 Codecademy
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Interactive coding lessons and projects.</span>
+    </li>
+  </ul>
+</div>
+
+<!-- Productivity Tools -->
+<div class="mb-10">
+  <h2 class="text-2xl sm:text-3xl font-bold text-sky-600 mb-4 border-b-4 border-cyan-300 pb-2">⚡ Productivity Tools</h2>
+  <ul class="space-y-4 pl-2">
+    <li>
+      <a href="https://calendar.google.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        📅 Google Calendar
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Schedule and organize your time!</span>
+    </li>
+    <li>
+      <a href="https://todoist.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        ✅ Todoist
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Organize tasks and projects effectively.</span>
+    </li>
+    <li>
+      <a href="https://docs.google.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        📝 Google Docs
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Collaborate on documents and essays.</span>
+    </li>
+    <li>
+      <a href="https://www.canva.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🎨 Canva
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Create presentations and graphics easily!</span>
+    </li>
+    <li>
+      <a href="https://discord.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        💬 Discord
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Join study groups and collaborate with friends.</span>
+    </li>
+  </ul>
+</div>
+
+<!-- Academic AI Assistants -->
+<div class="mb-10">
+  <h2 class="text-2xl sm:text-3xl font-bold text-sky-600 mb-4 border-b-4 border-cyan-300 pb-2">🤖 Academic AI Assistants</h2>
+  <ul class="space-y-4 pl-2">
+    <li>
+      <a href="https://www.grammarly.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        ✍️ Grammarly
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Perfect your writing with AI grammar help!</span>
+    </li>
+    <li>
+      <a href="https://hemingwayapp.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        📝 Hemingway Editor
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Make your writing clear and bold.</span>
+    </li>
+    <li>
+      <a href="https://photomath.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        📷 Photomath
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Solve math problems by taking a photo!</span>
+    </li>
+    <li>
+      <a href="https://www.symbolab.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        ∑ Symbolab
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Step-by-step math solutions and explanations.</span>
+    </li>
+    <li>
+      <a href="https://www.beautiful.ai/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        📊 Beautiful.AI
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Create stunning presentations with AI design.</span>
+    </li>
+  </ul>
+</div>
+
+<!-- Useful Webpages -->
+<div class="mb-10">
+  <h2 class="text-2xl sm:text-3xl font-bold text-sky-600 mb-4 border-b-4 border-cyan-300 pb-2">🌐 Essential Websites</h2>
+  <ul class="space-y-4 pl-2">
+    <li>
+      <a href="https://www.google.com" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🔍 Google Search
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Ask anything, find everything!</span>
+    </li>
+    <li>
+      <a href="https://www.khanacademy.org/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🎓 Khan Academy
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Free learning for every student!</span>
+    </li>
+    <li>
+      <a href="https://earth.google.com/web/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🌍 Google Earth
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Explore the entire planet in 3D!</span>
+    </li>
+    <li>
+      <a href="https://www.coursera.org/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🎯 Coursera
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Online courses from top universities!</span>
+    </li>
+    <li>
+      <a href="https://www.ted.com/" target="_blank" class="text-base sm:text-lg text-sky-700 hover:text-sky-900 font-semibold transition">
+        🎤 TED Talks
+      </a>
+      <span class="ml-2 text-cyan-800 text-sm sm:text-base">– Inspiring talks on every topic imaginable.</span>
+    </li>
+  </ul>
+</div>
+
+
+    <p class="text-center text-cyan-700 font-medium mt-8 text-sm sm:text-base leading-snug px-2">
+      👩‍💻 Made with love by <a href="aryan-portfolio.html" class="text-sky-600 hover:text-sky-800 underline font-bold transition-colors">ARYAN SHAKYA</a> AND <a href="about-us.html" class="text-sky-600 hover:text-sky-800 underline font-bold transition-colors">TEAM </a>
+      <hr class="my-2 border-cyan-700 w-1/2 mx-auto">
+      <span class="block text-center">
+      Aryan Shakya • Aryan Jadhav • Arthav Patil • Yash Chattar • Gracy Jyothi • Shrushti Pagar • Ishaan Talegaonkar • Atharva Bombatkar
+      </span>
+    </p>
+  </div>
+
+  <script>
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const sunIcon = document.querySelector('.sun-icon');
+    const moonIcon = document.querySelector('.moon-icon');
+    const html = document.documentElement;
+
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    html.setAttribute('data-theme', currentTheme);
+
+    // Update icon visibility based on current theme
+    function updateIcon() {
+      const theme = html.getAttribute('data-theme');
+      if (theme === 'dark') {
+        sunIcon.style.display = 'none';
+        moonIcon.style.display = 'block';
+      } else {
+        sunIcon.style.display = 'block';
+        moonIcon.style.display = 'none';
+      }
+    }
+
+    // Initialize icon state
+    updateIcon();
+
+    // Toggle theme function with smooth transition
+    function toggleTheme() {
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      // Add a subtle scale effect during transition
+      themeToggle.style.transform = 'scale(0.9) rotate(180deg)';
+      
+      setTimeout(() => {
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateIcon();
+        
+        // Reset the transform
+        setTimeout(() => {
+          themeToggle.style.transform = '';
+        }, 200);
+      }, 100);
+    }
+
+    // Add click event listener to toggle button
+    themeToggle.addEventListener('click', toggleTheme);
+
+    // Optional: Add keyboard support
+    themeToggle.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleTheme();
+      }
+    });
+  </script>
+</body>
+</html>

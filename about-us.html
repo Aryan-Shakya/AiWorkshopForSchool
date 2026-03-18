@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Our Team -  AI Workshop Students Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg-gradient-start: #e0f7fa;
+      --bg-gradient-end: #c5f0f7;
+      --text-primary: #004d40;
+      --bg-white: white;
+      --shadow-color: rgba(0, 0, 0, 0.15);
+      --border-color: #0891b2;
+    }
+
+    [data-theme="dark"] {
+      --bg-gradient-start: #0f172a;
+      --bg-gradient-end: #1e293b;
+      --text-primary: #e2e8f0;
+      --bg-white: #1e293b;
+      --shadow-color: rgba(0, 0, 0, 0.3);
+      --border-color: #38bdf8;
+    }
+
+    * {
+      transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                  background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 1rem;
+      box-sizing: border-box;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #box {
+      background-color: var(--bg-white);
+      border-radius: 2rem;
+      box-shadow: 0 20px 40px var(--shadow-color);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      backdrop-filter: blur(10px);
+    }
+
+    #box:hover {
+      transform: scale(1.005) translateY(-2px);
+      box-shadow: 0 25px 50px var(--shadow-color);
+    }
+
+    a {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    a:hover {
+      text-decoration: underline;
+      transform: translateY(-1px);
+    }
+
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 0.75rem;
+      right: 1rem;
+      background: var(--bg-gradient-start);
+      border: 2px solid var(--border-color);
+      border-radius: 50%;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 8px var(--shadow-color);
+      z-index: 50;
+      backdrop-filter: blur(10px);
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.15) rotate(10deg);
+      box-shadow: 0 8px 20px var(--shadow-color);
+    }
+
+    .theme-toggle svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .theme-toggle:active {
+      transform: scale(0.95);
+    }
+
+    /* Back button */
+    .back-btn {
+      position: fixed;
+      top: 0.75rem;
+      left: 1rem;
+      background: var(--bg-gradient-start);
+      border: 2px solid var(--border-color);
+      border-radius: 50%;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 8px var(--shadow-color);
+      z-index: 50;
+      backdrop-filter: blur(10px);
+    }
+
+    .back-btn:hover {
+      transform: scale(1.15) translateX(-2px);
+      box-shadow: 0 8px 20px var(--shadow-color);
+    }
+
+    .back-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Team member cards */
+    .team-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .team-card:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Dark mode specific styles */
+    [data-theme="dark"] .text-sky-600 {
+      color: #38bdf8 !important;
+    }
+
+    [data-theme="dark"] .text-teal-700 {
+      color: #5eead4 !important;
+    }
+
+    [data-theme="dark"] .text-sky-700 {
+      color: #7dd3fc !important;
+    }
+
+    [data-theme="dark"] .text-cyan-800 {
+      color: #67e8f9 !important;
+    }
+
+    [data-theme="dark"] .text-cyan-700 {
+      color: #67e8f9 !important;
+    }
+
+    [data-theme="dark"] .border-cyan-300 {
+      border-color: #0891b2 !important;
+    }
+
+    [data-theme="dark"] .drop-shadow-md {
+      filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.4));
+    }
+
+    [data-theme="dark"] .bg-sky-50 {
+      background: linear-gradient(135deg, #1e3a8a, #1e40af) !important;
+      border-color: #3b82f6 !important;
+    }
+
+    [data-theme="dark"] .bg-teal-50 {
+      background: linear-gradient(135deg, #065f46, #047857) !important;
+      border-color: #10b981 !important;
+    }
+
+    [data-theme="dark"] .bg-cyan-50 {
+      background: linear-gradient(135deg, #164e63, #0891b2) !important;
+      border-color: #22d3ee !important;
+    }
+
+    [data-theme="dark"] .bg-gradient-to-br {
+      background: linear-gradient(135deg, #1e3a8a, #1e40af) !important;
+      border-color: #3b82f6 !important;
+    }
+
+    [data-theme="dark"] .hover\:text-sky-900:hover {
+      color: #0284c7 !important;
+    }
+  </style>
+</head>
+<body>
+  <div id="box" class="w-full max-w-6xl p-4 sm:p-6 md:p-8 mt-4">
+    <!-- Back Button -->
+    <button class="back-btn" onclick="window.location.href='index.html'" aria-label="Back to main page">
+      <svg width="1.5rem" height="1.5rem" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"></path>
+      </svg>
+    </button>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+      <!-- Sun Icon (Light Mode) -->
+      <svg class="sun-icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+      </svg>
+      <!-- Moon Icon (Dark Mode) -->
+      <svg class="moon-icon" style="display: none;" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+      </svg>
+    </button>
+
+    <!-- Header Section -->
+    <div class="text-center mb-12 mt-8">
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-sky-600 mb-4 drop-shadow-md pt-8">
+        👥 Meet Our Amazing Team
+      </h1>
+      <p class="text-xl sm:text-2xl text-teal-700 mb-6">
+        The passionate students behind this Interactive AI Workshop 
+      </p>
+      <p class="text-base sm:text-lg text-cyan-800 leading-relaxed px-4">
+        We're a group of dedicated students who believe in the power of AI and technology to transform education and make learning more accessible for everyone.
+      </p>
+    </div>
+
+    <!-- Team Members Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+      <!-- Aryan Shakya -->
+      <div class="team-card bg-gradient-to-br from-sky-50 to-cyan-50 p-6 rounded-xl border-2 border-sky-200">
+        <div class="text-center mb-4">
+          <div class="w-20 h-20 bg-sky-200 rounded-full flex items-center justify-center text-3xl mb-4 mx-auto">
+            👨‍💻
+          </div>
+          <h3 class="text-xl font-bold text-sky-700 mb-2">Aryan Shakya</h3>
+          <p class="text-sky-600 font-semibold mb-3">Team Lead</p>
+        </div>
+        <p class="text-cyan-800 text-sm mb-4 leading-relaxed">
+          Lead developer and visionary behind the Student AI Portal. Passionate about creating educational technology that makes AI tools accessible to young learners.
+        </p>
+        <div class="text-center">
+          <a href="aryan-portfolio.html" class="bg-sky-100 hover:bg-sky-200 text-sky-700 px-4 py-2 rounded-lg font-semibold transition-all text-sm">
+            View Portfolio
+          </a>
+          <span class="bg-teal-100 text-teal-700 px-2 py-1 rounded text-xs">Workshop Lead</span>
+        </div>
+      </div>
+
+      <!-- Aryan Jadhav -->
+      <div class="team-card bg-gradient-to-br from-teal-50 to-emerald-50 p-6 rounded-xl border-2 border-teal-200">
+        <div class="text-center mb-4">
+          <div class="w-20 h-20 bg-teal-200 rounded-full flex items-center justify-center text-3xl mb-4 mx-auto">
+            🎨
+          </div>
+          <h3 class="text-xl font-bold text-teal-700 mb-2">Aryan Jadhav</h3>
+          <p class="text-teal-600 font-semibold mb-3">Management</p>
+        </div>
+        <p class="text-cyan-800 text-sm mb-4 leading-relaxed">
+          Creative designer focused on making the portal intuitive and visually appealing. Ensures every interaction is smooth and user-friendly for students.
+        </p>
+        <div class="flex flex-wrap gap-2 justify-center">
+          <span class="bg-teal-100 text-teal-700 px-2 py-1 rounded text-xs">Planning</span>
+          <span class="bg-teal-100 text-teal-700 px-2 py-1 rounded text-xs">Workshop Flow</span>
+        </div>
+      </div>
+
+      <!-- Arthav Patil -->
+      <div class="team-card bg-gradient-to-br from-purple-50 to-indigo-50 p-6 rounded-xl border-2 border-purple-200">
+        <div class="text-center mb-4">
+          <div class="w-20 h-20 bg-purple-200 rounded-full flex items-center justify-center text-3xl mb-4 mx-auto">
+            🔧
+          </div>
+          <h3 class="text-xl font-bold text-purple-700 mb-2">Arthav Patil</h3>
+          <p class="text-purple-600 font-semibold mb-3">Management</p>
+        </div>
+        <p class="text-cyan-800 text-sm mb-4 leading-relaxed">
+          Technical expert handling the backend infrastructure and ensuring the portal runs smoothly. Specializes in optimizing performance and reliability.
+        </p>
+        <div class="flex flex-wrap gap-2 justify-center">
+          <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs">Operations</span>
+          <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs">Workshop Management</span>
+        </div>
+      </div>
+
+      <!-- Yash Chattar -->
+      <div class="team-card bg-gradient-to-br from-orange-50 to-red-50 p-6 rounded-xl border-2 border-orange-200">
+        <div class="text-center mb-4">
+          <div class="w-20 h-20 bg-orange-200 rounded-full flex items-center justify-center text-3xl mb-4 mx-auto">
+            📊
+          </div>
+          <h3 class="text-xl font-bold text-orange-700 mb-2">Yash Chattar</h3>
+          <p class="text-orange-600 font-semibold mb-3">Member</p>
+        </div>
+        <p class="text-cyan-800 text-sm mb-4 leading-relaxed">
+          Analyzes user behavior and educational trends to help improve the portal. Ensures we're featuring the most valuable AI tools for students.
+        </p>
+        <div class="flex flex-wrap gap-2 justify-center">
+          <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs">Technical Management</span>
+          <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs">Research</span>
+        </div>
+      </div>
+
+      <!-- Gracy Jyothi -->
+      <div class="team-card bg-gradient-to-br from-pink-50 to-rose-50 p-6 rounded-xl border-2 border-pink-200">
+        <div class="text-center mb-4">
+          <div class="w-20 h-20 bg-pink-200 rounded-full flex items-center justify-center text-3xl mb-4 mx-auto">
+            📝
+          </div>
+          <h3 class="text-xl font-bold text-pink-700 mb-2">Gracy Jyothi</h3>
+          <p class="text-pink-600 font-semibold mb-3">Member</p>
+        </div>
+        <p class="text-cyan-800 text-sm mb-4 leading-relaxed">
+          Researches and curates the best educational content and AI tools. Ensures all resources are relevant, helpful, and age-appropriate for students.
+        </p>
+        <div class="flex flex-wrap gap-2 justify-center">
+          <span class="bg-pink-100 text-pink-700 px-2 py-1 rounded text-xs">Content</span>
+          <span class="bg-pink-100 text-pink-700 px-2 py-1 rounded text-xs">Technical Management</span>
+        </div>
+      </div>
+
+      <!-- Shrushti Pagar -->
+      <div class="team-card bg-gradient-to-br from-emerald-50 to-green-50 p-6 rounded-xl border-2 border-emerald-200">
+        <div class="text-center mb-4">
+          <div class="w-20 h-20 bg-emerald-200 rounded-full flex items-center justify-center text-3xl mb-4 mx-auto">
+            🔍
+          </div>
+          <h3 class="text-xl font-bold text-emerald-700 mb-2">Shrushti Pagar</h3>
+          <p class="text-emerald-600 font-semibold mb-3">Member</p>
+        </div>
+        <p class="text-cyan-800 text-sm mb-4 leading-relaxed">
+          Ensures every feature works perfectly and the user experience is seamless. Tests all tools and resources to maintain high quality standards.
+        </p>
+        <div class="flex flex-wrap gap-2 justify-center">
+          <span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-xs">Tools Testing</span>
+          <span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-xs">Technical Management</span>
+        </div>
+      </div>
+
+      <!-- Ishaan Talegaonkar -->
+      <div class="team-card bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl border-2 border-blue-200">
+        <div class="text-center mb-4">
+          <div class="w-20 h-20 bg-blue-200 rounded-full flex items-center justify-center text-3xl mb-4 mx-auto">
+            🌐
+          </div>
+          <h3 class="text-xl font-bold text-blue-700 mb-2">Ishaan Talegaonkar</h3>
+          <p class="text-blue-600 font-semibold mb-3">Member</p>
+        </div>
+        <p class="text-cyan-800 text-sm mb-4 leading-relaxed">
+          Specializes in creating responsive and interactive user interfaces. Makes sure the portal works beautifully on all devices and browsers.
+        </p>
+        <div class="flex flex-wrap gap-2 justify-center">
+          <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">Research</span>
+          <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">Yapping</span>
+        </div>
+      </div>
+
+      <!-- Atharva Bombatkar -->
+      <div class="team-card bg-gradient-to-br from-violet-50 to-purple-50 p-6 rounded-xl border-2 border-violet-200">
+        <div class="text-center mb-4">
+          <div class="w-20 h-20 bg-violet-200 rounded-full flex items-center justify-center text-3xl mb-4 mx-auto">
+            🚀
+          </div>
+          <h3 class="text-xl font-bold text-violet-700 mb-2">Atharva Bombatkar</h3>
+          <p class="text-violet-600 font-semibold mb-3">Content And Photography</p>
+        </div>
+        <p class="text-cyan-800 text-sm mb-4 leading-relaxed">
+          Explores new technologies and innovative features to enhance the learning experience. Always looking for cutting-edge solutions for students.
+        </p>
+        <div class="flex flex-wrap gap-2 justify-center">
+          <span class="bg-violet-100 text-violet-700 px-2 py-1 rounded text-xs">Content</span>
+          <span class="bg-violet-100 text-violet-700 px-2 py-1 rounded text-xs">Research</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mission Statement -->
+    <div class="text-center bg-gradient-to-r from-sky-50 to-cyan-50 p-8 rounded-xl border-2 border-sky-200 mb-8">
+      <h2 class="text-2xl sm:text-3xl font-bold text-sky-600 mb-4">🎯 Why Are We Here?</h2>
+      <p class="text-lg text-cyan-800 leading-relaxed mb-4">
+  We are B.Tech CSE students from 
+  <a href="https://www.dypiu.ac.in/" target="_blank" class="text-sky-600 hover:text-sky-800 underline font-semibold transition-colors">
+    D.Y. Patil International University</a>,doing our rural internship at <a href="https://www.sanjivani.ngo/" target="_blank" class="text-sky-600 hover:text-sky-800 underline font-semibold transition-colors">Sanjivani NGO</a>.
+</p>
+
+      <p class="text-base text-cyan-700 leading-relaxed">
+        We believe that every student deserves access to the best educational tools available. Our portal serves as a bridge between students and the powerful AI technologies that can accelerate their learning journey.
+      </p>
+    </div>
+
+    <!-- Back to Portal -->
+    <div class="text-center">
+      <a href="index.html" class="bg-sky-100 hover:bg-sky-200 text-sky-700 px-8 py-4 rounded-xl font-bold text-lg transition-all inline-flex items-center gap-2">
+        🚀 Back to AI Portal
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const sunIcon = document.querySelector('.sun-icon');
+    const moonIcon = document.querySelector('.moon-icon');
+    const html = document.documentElement;
+
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    html.setAttribute('data-theme', currentTheme);
+
+    // Update icon visibility based on current theme
+    function updateIcon() {
+      const theme = html.getAttribute('data-theme');
+      if (theme === 'dark') {
+        sunIcon.style.display = 'none';
+        moonIcon.style.display = 'block';
+      } else {
+        sunIcon.style.display = 'block';
+        moonIcon.style.display = 'none';
+      }
+    }
+
+    // Initialize icon state
+    updateIcon();
+
+    // Toggle theme function with smooth transition
+    function toggleTheme() {
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      // Add a subtle scale effect during transition
+      themeToggle.style.transform = 'scale(0.9) rotate(180deg)';
+      
+      setTimeout(() => {
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateIcon();
+        
+        // Reset the transform
+        setTimeout(() => {
+          themeToggle.style.transform = '';
+        }, 200);
+      }, 100);
+    }
+
+    // Add click event listener to toggle button
+    themeToggle.addEventListener('click', toggleTheme);
+
+    // Optional: Add keyboard support
+    themeToggle.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleTheme();
+      }
+    });
+  </script>
+</body>
+</html>
